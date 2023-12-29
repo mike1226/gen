@@ -1,14 +1,18 @@
 package swift.valid.gen.excel;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 import java.io.IOException;
 
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelUtils {
 
@@ -121,4 +125,45 @@ public class ExcelUtils {
         return "";
     }
 
+
+    /** 
+     * create new excel file
+     * use datq map to fill the excel file as sheet 1
+     * set sheet 1 name as "data"
+     * 
+     * @param String filePath
+     * @pamam List<Map<String,tsring>> data
+     * @return int result
+     */
+    public static int createExcelFile(String filePath, List<Map<String, String>> data) {
+        int result = 0;
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("data");
+        Row row = sheet.createRow(0);
+        int col = 0;
+        for (String key : data.get(0).keySet()) {
+            Cell cell = row.createCell(col);
+            cell.setCellValue(key);
+            col++;
+        }
+        int rownum = 1;
+        for (Map<String, String> map : data) {
+            Row row1 = sheet.createRow(rownum);
+            int colnum = 0;
+            for (String key : map.keySet()) {
+                Cell cell = row1.createCell(colnum);
+                cell.setCellValue(map.get(key));
+                colnum++;
+            }
+            rownum++;
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(filePath);
+            workbook.write(out);
+            out.close();
+            result = 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
 }
