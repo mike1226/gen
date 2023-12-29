@@ -36,4 +36,27 @@ public class CsvUtils {
         }
         return dataList;
     }
+
+    /* 读取CSV文件
+     * 文件的字符集编码为UTF-8
+     * 分割符为逗号
+     * @param filePath 文件路径
+     * @return dataList 返回的`List<Map<Integer, String>>`数据
+     * @throws Exception
+     */
+    public static List<Map<Integer, String>> readCsvFile(String filePath) throws Exception {
+        List<Map<Integer, String>> dataList = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            String item[] = line.split(",");
+            Map<Integer, String> map = new HashMap<>();
+            for (int i = 0; i < item.length; i++) {
+                map.put(i, item[i]);
+            }
+            dataList.add(map);
+        }
+        return dataList;
+
+
 }
