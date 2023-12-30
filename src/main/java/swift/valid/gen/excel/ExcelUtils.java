@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Name;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -14,6 +15,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 public class ExcelUtils {
 
@@ -136,22 +138,17 @@ public class ExcelUtils {
      * @pamam List<Map<String,tsring>> data
      * @return int result
      */
-    public static int createExcelFile(String filePath, List<Map<String, String>> data) {
+    public static int createExcelFile(String filePath, List<Map<Integer, String>> data) {
         int result = 0;
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("data");
         Row row = sheet.createRow(0);
-        int col = 0;
-        for (String key : data.get(0).keySet()) {
-            Cell cell = row.createCell(col);
-            cell.setCellValue(key);
-            col++;
-        }
-        int rownum = 1;
-        for (Map<String, String> map : data) {
+
+        int rownum = 0;
+        for (Map<Integer, String> map : data) {
             Row row1 = sheet.createRow(rownum);
             int colnum = 0;
-            for (String key : map.keySet()) {
+            for (Integer key : map.keySet()) {
                 Cell cell = row1.createCell(colnum);
                 cell.setCellValue(map.get(key));
                 colnum++;
